@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface JWTUserRepository extends CrudRepository<JWTUser, Long> {
     Optional<JWTUser> findByEmail(String email);
+
+    Optional<JWTUser> findByUserName(String userName);
 }

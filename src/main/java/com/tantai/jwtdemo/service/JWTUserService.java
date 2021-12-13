@@ -1,5 +1,6 @@
 package com.tantai.jwtdemo.service;
 
+import com.tantai.jwtdemo.domain.JWTUser;
 import com.tantai.jwtdemo.repository.JWTUserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,5 +33,13 @@ public class JWTUserService implements UserDetailsService {
             });
             return new User(p.getUserName(), p.getPassword(), userRoles);
         }).orElseThrow(() -> new UsernameNotFoundException("Not found user " + username));
+    }
+
+    public Optional<JWTUser> getByEmail(String email) {
+        return jwtUserRepository.findByEmail(email);
+    }
+
+    public Optional<JWTUser> getByUserName(String userName) {
+        return jwtUserRepository.findByUserName(userName);
     }
 }
