@@ -51,6 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //Enable CORS and disable CSRF
         http = http.cors().and().csrf().disable();
 
+        //For h2 database
+        http.headers().frameOptions().disable();
+
         //Set session management to stateless
         http = http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -68,13 +71,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 // Our public endpoints
-                .antMatchers("/api/public/**").permitAll()
+                .antMatchers("/h2-console/**", "/api/public/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/author/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/book/**").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()
                 // Our private endpoints
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and();
+
 
         //Add JWT token filter
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

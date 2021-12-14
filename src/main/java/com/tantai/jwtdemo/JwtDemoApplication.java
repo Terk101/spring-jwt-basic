@@ -28,7 +28,7 @@ public class JwtDemoApplication implements CommandLineRunner {
 		user1.setUserName("Dummy1");
 		user1.setEmail("Dummy1@mail.com");
 		user1.setPassword(bCryptPasswordEncoder.encode("password"));
-		user1.setRoles(List.of("ADMIN", "EMPLOYEE"));
+		user1.setRoles(List.of("ADMIN"));
 		jwtUserRepository.save(user1);
 	}
 }
